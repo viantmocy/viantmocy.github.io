@@ -172,11 +172,53 @@
       </div>
     </section>
 
+    <section class="warning" aria-label="Peringatan">
+      <div class="warning-inner">
+        <div class="warning-badge" aria-hidden="true">⚠️ WARNING</div>
+        <h3 class="warning-title">Main untuk hiburan. Gunakan dengan bijak.</h3>
+        <p class="warning-sub">
+          Halaman ini bersifat informatif. Nikmati untuk hiburan dan gunakan secara bertanggung jawab.
+        </p>
+      </div>
+    </section>
+
     <footer>
-      <p>
+      <div class="visitor-row">
+        <span class="visitor-icon" aria-hidden="true">👥</span>
+        <span class="visitor-label">Visitor:</span>
+        <span id="visitorCounter" class="visitor-counter" aria-live="polite">—</span>
+      </div>
+
+      <p class="footer-note">
         Main untuk hiburan. Gunakan dengan bijak.
       </p>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      try {
+        var key = 'visitor_counter_daily_v1';
+        var now = new Date();
+        var dayKey = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+
+        var payload = JSON.parse(localStorage.getItem(key) || '{}');
+
+        if (!payload || typeof payload !== 'object') payload = {};
+        if (payload.day !== dayKey) {
+          payload.day = dayKey;
+          payload.count = 0;
+        }
+
+        payload.count = (Number(payload.count) || 0) + 1;
+        localStorage.setItem(key, JSON.stringify(payload));
+
+        var el = document.getElementById('visitorCounter');
+        if (el) el.textContent = payload.count.toLocaleString('id-ID');
+      } catch (e) {
+        // no-op (counter is best-effort)
+      }
+    })();
+  </script>
 </body>
 </html>
